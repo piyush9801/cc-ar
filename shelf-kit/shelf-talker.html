@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Curl Cult · Shelf Talker (Print)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Curl Cult palette — shared with main app */
+    :root {
+      --bg: #0a0a0a;
+      --card: #1a1a1a;
+      --text: #ffffff;
+      --muted: #a0a0a0;
+      --rose: #E89B7F;
+      --olive: #BFC288;
+      --border: rgba(255, 255, 255, 0.08);
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #333;
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    /* ═══════════ 8.5 × 11 PRINT SHEET ═══════════ */
+    .sheet {
+      width: 8.5in;
+      height: 11in;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      /* Curl Cult radial gradient — subtle, feels cinematic */
+      background:
+        radial-gradient(circle at 50% 15%, rgba(232, 155, 127, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(191, 194, 136, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+      box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Corner ornaments — thin rose lines for the Curl Cult feel */
+    .sheet::before, .sheet::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--rose);
+      opacity: 0.6;
+    }
+    .sheet::before { top: 30px; left: 30px; border-right: none; border-bottom: none; }
+    .sheet::after { bottom: 30px; right: 30px; border-left: none; border-top: none; }
+
+    /* Header row */
+    .header {
+      padding: 60px 60px 40px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 22px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+    .brand .dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--rose);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 12px 3px;
+    }
+
+    .tagline {
+      font-family: var(--font-hand);
+      font-size: 48px;
+      color: var(--rose);
+      line-height: 1;
+      margin-top: 8px;
+    }
+
+    .supertitle {
+      font-weight: 800;
+      font-size: 54px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    /* Hero: the composed bottle-with-qr image */
+    .hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 40px;
+    }
+
+    .hero img {
+      max-width: 100%;
+      max-height: 560px;
+      border-radius: 12px;
+      box-shadow: 0 16px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255,255,255,0.06);
+    }
+
+    /* Instruction strip */
+    .steps {
+      padding: 30px 60px 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      background: rgba(26, 26, 26, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 16px;
+      text-align: center;
+    }
+
+    .step-num {
+      font-family: var(--font-hand);
+      font-size: 34px;
+      color: var(--rose);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .step-title {
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .step-sub {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 20px 60px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .footer .url {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      color: var(--olive);
+      font-size: 10px;
+    }
+
+    .footer .social {
+      text-align: right;
+    }
+
+    /* Hairline divider above steps */
+    .steps::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 60px;
+      right: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose) 50%, transparent);
+      opacity: 0.3;
+      margin-top: -14px;
+    }
+
+    /* ═══════════ PRINT STYLES ═══════════ */
+    @page {
+      size: letter;
+      margin: 0;
+    }
+
+    @media print {
+      html, body { background: #fff; padding: 0; }
+      .sheet { box-shadow: none; }
+      .no-print { display: none !important; }
+    }
+
+    /* Screen preview: print + download helper */
+    .no-print {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--rose);
+      color: #1a0a05;
+      font-family: var(--font-body);
+      font-weight: 700;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(232, 155, 127, 0.4);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .no-print:hover { background: #d88a6f; }
+  </style>
+</head>
+<body>
+
+  <div class="sheet">
+    <div class="header">
+      <p class="brand">CURL CULT<span class="dot"></span>CosmoProf</p>
+      <h1 class="tagline">Scan me.</h1>
+      <h2 class="supertitle">Start the Cult</h2>
+    </div>
+
+    <div class="hero">
+      <img src="bottle-with-qr.png" alt="Curl Cult Magic Spell with QR code">
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1.</div>
+        <div class="step-title">Open Camera</div>
+        <div class="step-sub">Use your phone's default camera app</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2.</div>
+        <div class="step-title">Point at the QR</div>
+        <div class="step-sub">Tap the banner to open the experience</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3.</div>
+        <div class="step-title">Scan the bottle</div>
+        <div class="step-sub">AR unfolds in 8 guided screens</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>
+        <p>The modern system for effortless texture.</p>
+        <p class="url">curlcult-ar.loca.lt</p>
+      </div>
+      <div class="social">
+        <p>@curlcult</p>
+        <p>curlcult.com</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="no-print" onclick="window.print()">Print / Save as PDF</button>
+</body>
+</html>
