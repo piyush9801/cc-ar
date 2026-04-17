@@ -908,10 +908,17 @@
             min-camera-orbit="auto auto auto"
             style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;top:-9999px;">
           </model-viewer>
-          <button type="button" class="ar-hint" data-ar-place aria-label="${hintLabel}">
-            <span class="ar-hint-dot"></span>
-            <span>Tap to place</span>
-          </button>
+          ${isIOS && ch.arModel.iosSrc
+            ? `<a class="ar-hint" rel="ar" href="${ch.arModel.iosSrc}" aria-label="${hintLabel}">
+                <span class="ar-hint-dot"></span>
+                <span>Tap to place</span>
+                <img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" style="width:1px;height:1px;position:absolute;opacity:0;pointer-events:none">
+              </a>`
+            : `<button type="button" class="ar-hint" data-ar-place aria-label="${hintLabel}">
+                <span class="ar-hint-dot"></span>
+                <span>Tap to place</span>
+              </button>`
+          }
         `;
       }
       stageInner.innerHTML = html;
