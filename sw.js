@@ -1,72 +1,62 @@
 /* ═══════════════════════════════════════════════════════════════
-   CURL CULT · Service Worker
+   CURL CULT · Service Worker (lite)
    ───────────────────────────────────────────────────────────────
-   Cache-first for the app shell + 3D assets so the experience
-   works on a booth tablet with spotty wifi. Version-busted by
-   bumping CACHE_NAME — old caches are pruned on activate.
+   Shell-only cache. 3D models and audio go straight to the network
+   so the SW never hoards 250MB and fights the browser cache.
    ═══════════════════════════════════════════════════════════════ */
 
-const CACHE_NAME = 'curlcult-v20260417r';
-const SHELL_EXTRA = ['./audio.js'];
-
-// App shell + core assets. 3D models and fonts get cached lazily
-// on first fetch so the initial install doesn't stall.
+const CACHE_NAME = 'curlcult-v20260418-shell';
 const SHELL = [
   './',
   './index.html',
-  './app.js?v=20260417i',
-  './style.css?v=20260417g',
+  './style.css',
   './manifest.webmanifest',
   './assets/logo.svg',
 ];
 
 self.addEventListener('install', (event) => {
+  // Install fast so the user never waits on the SW boot.
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL))
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(SHELL).catch(() => { /* ok */ }))
       .then(() => self.skipWaiting())
-      .catch(() => { /* install-time failures shouldn't block the SW */ })
   );
 });
 
 self.addEventListener('activate', (event) => {
+  // Purge any previous cache version; don't claim clients mid-session
+  // (claiming can trigger a controllerchange that apps interpret as a
+  // reload, which is exactly the "goes back to the beginning" bug).
   event.waitUntil(
     caches.keys().then((names) =>
       Promise.all(names.map((n) => n === CACHE_NAME ? null : caches.delete(n)))
-    ).then(() => self.clients.claim())
+    )
   );
 });
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-  // Only GETs, only same-origin — leave model-viewer CDN + analytics alone.
   if (req.method !== 'GET') return;
+
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Cache-first, network-fallback, write-through
+  // 3D / media / audio: always go to network. Don't cache — these are
+  // tens of MB each and fill up device storage fast.
+  if (/\.(glb|usdz|mp3|mp4|wav|ogg|jpg|jpeg|png|webp)$/i.test(url.pathname)) {
+    return; // let the browser handle it natively
+  }
+
+  // Shell: cache-first, no background refresh, no refetch loop.
   event.respondWith(
-    caches.match(req).then((cached) => {
-      if (cached) {
-        // Refresh in background so the next visit has fresh content
-        fetch(req).then((res) => {
-          if (res && res.status === 200) {
-            caches.open(CACHE_NAME).then((c) => c.put(req, res.clone()));
-          }
-        }).catch(() => {});
-        return cached;
+    caches.match(req).then((cached) => cached || fetch(req).then((res) => {
+      if (res && res.status === 200 && res.type === 'basic') {
+        const clone = res.clone();
+        caches.open(CACHE_NAME).then((c) => c.put(req, clone));
       }
-      return fetch(req).then((res) => {
-        if (res && res.status === 200 && res.type === 'basic') {
-          const clone = res.clone();
-          caches.open(CACHE_NAME).then((c) => c.put(req, clone));
-        }
-        return res;
-      }).catch(() => {
-        // Final network failure — for navigations, return the cached shell
-        if (req.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
-    })
+      return res;
+    }).catch(() => {
+      if (req.mode === 'navigate') return caches.match('./index.html');
+    }))
   );
 });

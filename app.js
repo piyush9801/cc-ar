@@ -600,17 +600,12 @@
   // ASSET PRELOADER — fetch all heavy assets up-front, track real
   // progress via streamed bytes, and gate BEGIN until done.
   // ═══════════════════════════════════════════════════════════════
+  // Preload only the bare minimum to unlock BEGIN. The model-viewer
+  // in each chapter's stage loads its own GLB lazily (loading="eager"
+  // kicks in the moment the chapter mounts), so we don't need to pull
+  // 250MB of models up front. That was stalling mobile browsers into
+  // a tab-kill → "back to landing" loop.
   const PRELOAD_ASSETS = [
-    'assets/janine-wave-matte.glb',
-    'assets/butterflies.glb',
-    'assets/gilded-hair-spiral.glb',
-    'assets/midnight-curls.glb',
-    'assets/golden-chair.glb',
-    'assets/bottle-opt.glb',
-    'assets/conditioner-new.glb',
-    'assets/cream-new.glb',
-    'assets/liquid-drop.glb',
-    'assets/hair-ring.glb',
     'assets/logo.svg',
     'assets/draco/draco_decoder.wasm',
     'assets/draco/draco_wasm_wrapper.js',
