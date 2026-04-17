@@ -602,17 +602,16 @@
   // progress via streamed bytes, and gate BEGIN until done.
   // ═══════════════════════════════════════════════════════════════
   const PRELOAD_ASSETS = [
-    'assets/janine-wave.glb',
+    'assets/janine-wave-matte.glb',
     'assets/butterflies.glb',
-    'assets/butterflies.usdz',
-    'assets/chair.glb',
-    'assets/chair.usdz',
+    'assets/gilded-hair-spiral.glb',
+    'assets/midnight-curls.glb',
+    'assets/golden-chair.glb',
     'assets/bottle-opt.glb',
-    'assets/bottle-opt.usdz',
     'assets/conditioner-new.glb',
     'assets/cream-new.glb',
-    'assets/human-portrait.glb',
     'assets/liquid-drop.glb',
+    'assets/hair-ring.glb',
     'assets/logo.svg',
     'assets/draco/draco_decoder.wasm',
     'assets/draco/draco_wasm_wrapper.js',

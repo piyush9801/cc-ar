@@ -11,3 +11,4 @@ tunnel_pinggy.log
 .env*
 *.key
 generate-texture.log
+.vercel
