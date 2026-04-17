@@ -568,8 +568,8 @@
             auto-rotate
             auto-rotate-delay="0"
             rotation-per-second="22deg"
-            camera-orbit="0deg 82deg 1.1m"
-            field-of-view="26deg"
+            camera-orbit="0deg 82deg 1.35m"
+            field-of-view="30deg"
             disable-zoom
             disable-pan
             interaction-prompt="none"

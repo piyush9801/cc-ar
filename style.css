@@ -5079,7 +5079,9 @@ body.sheet-peek .chapter-stage {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 180%;
+  /* Fit inside the stage — previously 180% which pushed 40% above
+     the container and clipped the top of the ring on smaller screens. */
+  width: min(110%, 120vmin);
   max-width: none;
   aspect-ratio: 1 / 1;
   transform: translate(-50%, -50%);
