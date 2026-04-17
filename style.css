@@ -2573,6 +2573,34 @@ body.unlocked .hud-restart:hover { opacity: 1; }
 
 /* AR hint chip — clickable button that triggers AR placement.
    Lives above the sheet so it stays tappable in both sheet states. */
+/* Coaching hint above the Tap to Place pill — teaches the user to
+   point at the floor BEFORE Apple's Quick Look 'keep moving iPhone'
+   overlay appears, so the ARKit coaching screen feels brief. */
+.ar-coach {
+  position: absolute;
+  left: 50%;
+  bottom: 78px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 247, 0.62);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 68;
+  animation: ar-coach-fade 2800ms ease-in-out 400ms infinite;
+}
+@keyframes ar-coach-fade {
+  0%, 100% { opacity: 0.45; }
+  50%      { opacity: 0.85; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ar-coach { animation: none; opacity: 0.7; }
+}
+
 .ar-hint {
   appearance: none;
   -webkit-appearance: none;

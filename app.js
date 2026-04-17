@@ -908,6 +908,7 @@
             min-camera-orbit="auto auto auto"
             style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px;top:-9999px;">
           </model-viewer>
+          <p class="ar-coach" aria-hidden="true">Point at a flat surface · floor or table</p>
           ${isIOS && ch.arModel.iosSrc
             ? `<a class="ar-hint" rel="ar" href="${ch.arModel.iosSrc}" aria-label="${hintLabel}">
                 <span class="ar-hint-dot"></span>
@@ -922,6 +923,25 @@
         `;
       }
       stageInner.innerHTML = html;
+
+      // Prefetch the chapter's USDZ so iOS Quick Look opens without the
+      // initial "loading" white screen — the file is already in HTTP
+      // cache by the time the user taps Tap to Place. Uses a hidden
+      // <link rel="prefetch"> per chapter (browser-managed, deduped).
+      if (isIOS && ch.arModel && ch.arModel.iosSrc) {
+        const existing = document.head.querySelector(
+          `link[rel="prefetch"][data-ar-prefetch="${ch.arModel.iosSrc}"]`
+        );
+        if (!existing) {
+          const pre = document.createElement('link');
+          pre.rel = 'prefetch';
+          pre.as = 'fetch';
+          pre.crossOrigin = 'anonymous';
+          pre.href = ch.arModel.iosSrc;
+          pre.setAttribute('data-ar-prefetch', ch.arModel.iosSrc);
+          document.head.appendChild(pre);
+        }
+      }
 
       // Use setTimeout (not rAF) — A-Frame warns about "rAF timed out"
       // because MindAR injection also requests rAF, causing throttling.
