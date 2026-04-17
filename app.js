@@ -2985,13 +2985,15 @@
       secure: window.isSecureContext
     });
 
-    // Register service worker for offline PWA install (booth kiosks).
-    // Skipped on http (SW requires https or localhost).
+    // Register sw.js — but the current sw.js is a self-unregistering
+    // killswitch that wipes all caches on activate. We keep the
+    // registration call so returning visitors who have the OLD
+    // cache-first SW get force-upgraded to the killswitch, which
+    // then removes itself. After that first visit the browser runs
+    // with zero SWs and lets HTTP cache handle everything.
     if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname.startsWith('127.'))) {
-      navigator.serviceWorker.register('sw.js').then(
-        (reg) => debug.log('SW registered · scope=' + reg.scope),
-        (err) => debug.warn('SW registration failed: ' + err.message)
-      );
+      navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+        .catch(() => {});
     }
 
     // Kick off the asset preloader. BEGIN unlocks when complete.

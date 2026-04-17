@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "headers": [
+    { "source": "/sw.js", "headers": [
+      { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" }
+    ]},
     { "source": "/(.*)\\.(glb|usdz)$", "headers": [
       { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" },
       { "key": "Access-Control-Allow-Origin", "value": "*" }
