@@ -1317,7 +1317,37 @@
       debug.warn('No AR model for this chapter');
       return;
     }
-    // First try the hidden placeholder in the stage that has `ar` enabled
+    const isIOS = /iP(ad|hone|od)/.test(navigator.userAgent);
+
+    // On iOS, bypass model-viewer and trigger Quick Look directly with
+    // an <a rel="ar"> anchor — the officially supported path. model-
+    // viewer's own activateAR() path has been flaky on recent Safari
+    // builds (silently no-ops when the placer is off-screen or when
+    // the page has been idle for a while).
+    if (isIOS && ch.arModel.iosSrc) {
+      try {
+        const a = document.createElement('a');
+        a.setAttribute('rel', 'ar');
+        a.href = ch.arModel.iosSrc;
+        // Quick Look requires an <img> child or callToAction fragment
+        // inside the anchor. An empty <img> satisfies the requirement
+        // without rendering anything the user can see.
+        const img = document.createElement('img');
+        img.alt = ch.arModel.label || 'View in AR';
+        img.style.cssText = 'width:0;height:0;display:none';
+        a.appendChild(img);
+        document.body.appendChild(a);
+        track('ar_activate_ios', { chapter: ch.id, model: ch.arModel.iosSrc });
+        debug.log(`iOS Quick Look · ${ch.arModel.iosSrc}`);
+        a.click();
+        setTimeout(() => a.remove(), 1000);
+        return;
+      } catch (e) {
+        debug.error(`Quick Look anchor failed: ${e.message}`);
+      }
+    }
+
+    // Android / WebXR → delegate to model-viewer
     const placer = document.getElementById('ar-placer');
     if (placer && placer.canActivateAR) {
       track('ar_activate', { chapter: ch.id, model: ch.arModel.src });
