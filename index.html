@@ -56,7 +56,7 @@
       <p class="desktop-notice-eyebrow">Built for mobile</p>
       <h1 class="desktop-notice-headline">This lives on your phone.</h1>
       <p class="desktop-notice-copy">Curl Cult Spatial is an AR experience — camera, gyroscope, floor placement. Scan the QR code or open this page on your phone to begin.</p>
-      <div class="desktop-notice-qr"><canvas id="desktop-notice-qr-canvas" width="180" height="180"></canvas></div>
+      <div class="desktop-notice-qr"><div id="desktop-notice-qr-canvas"></div></div>
       <p class="desktop-notice-url" id="desktop-notice-url"></p>
       <button type="button" class="desktop-notice-override" id="desktop-notice-override">Continue on desktop anyway</button>
     </div>
@@ -158,7 +158,7 @@
 
   <!-- Desktop gate: QR + "open on phone" notice. Runs before app.js so
        heavy preloads don't start on desktop viewers. -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js" defer></script>
   <script>
     (function(){
       function isMobileViewer(){
@@ -176,14 +176,44 @@
       notice.hidden = false;
       var urlEl = document.getElementById('desktop-notice-url');
       if (urlEl) urlEl.textContent = location.href;
-      // Draw QR once library is ready
+
+      // Draw QR once library is ready. qrcodejs's QRCode is a
+      // constructor (new QRCode(el, {text, width, height, ...}))
+      // that injects an <img>+<table> fallback into the target div.
+      var tries = 0;
       function drawQR(){
-        if (!window.QRCode) return setTimeout(drawQR, 80);
-        var canvas = document.getElementById('desktop-notice-qr-canvas');
-        if (!canvas) return;
-        window.QRCode.toCanvas(canvas, location.href, { width: 180, margin: 1, color: { dark: '#000', light: '#fff' } }, function(){});
+        if (typeof window.QRCode !== 'function') {
+          if (++tries < 60) return setTimeout(drawQR, 80);
+          return fallbackToImgAPI();
+        }
+        var target = document.getElementById('desktop-notice-qr-canvas');
+        if (!target) return;
+        target.innerHTML = '';
+        try {
+          new window.QRCode(target, {
+            text: location.href,
+            width: 180,
+            height: 180,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: window.QRCode.CorrectLevel ? window.QRCode.CorrectLevel.M : 0
+          });
+        } catch (e) { fallbackToImgAPI(); }
+      }
+      // Hard fallback if the library is blocked — use an external
+      // QR image service so the user still sees a scannable code.
+      function fallbackToImgAPI(){
+        var target = document.getElementById('desktop-notice-qr-canvas');
+        if (!target) return;
+        var img = document.createElement('img');
+        img.width = 180; img.height = 180;
+        img.alt = 'QR code for this page';
+        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=0&data=' + encodeURIComponent(location.href);
+        target.innerHTML = '';
+        target.appendChild(img);
       }
       drawQR();
+
       var override = document.getElementById('desktop-notice-override');
       if (override) override.addEventListener('click', function(){
         sessionStorage.setItem('cc-desktop-ok', '1');
