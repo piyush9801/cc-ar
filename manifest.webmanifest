@@ -1,0 +1,34 @@
+{
+  "name": "Curl Cult · Spatial",
+  "short_name": "Curl Cult",
+  "description": "A spatial experience for salon professionals — place Curl Cult in your room, earn your certification, text the link to your roster.",
+  "start_url": "./?pwa=1",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "categories": ["lifestyle", "shopping", "utilities"],
+  "icons": [
+    {
+      "src": "assets/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Booth tour",
+      "short_name": "Tour",
+      "description": "Auto-advancing booth display mode",
+      "url": "./?tour=1"
+    },
+    {
+      "name": "Jump to math",
+      "short_name": "Math",
+      "description": "Start at the ROI calculator",
+      "url": "./?demo=1&start=4"
+    }
+  ]
+}
