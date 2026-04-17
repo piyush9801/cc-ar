@@ -325,9 +325,9 @@
             auto-rotate
             auto-rotate-delay="400"
             rotation-per-second="4deg"
-            camera-orbit="-15deg 82deg 1.6m"
-            camera-target="0m 1.55m 0m"
-            field-of-view="26deg"
+            camera-orbit="-15deg 82deg auto"
+            camera-target="auto auto auto"
+            field-of-view="30deg"
             shadow-intensity="1.3"
             shadow-softness="0.85"
             exposure="1.0"
