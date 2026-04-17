@@ -196,7 +196,7 @@
       caption: "Zoom in on a single curl. That golden helix is thousands of disulfide bonds. Skip the primer and the bonds fracture — the spiral unwinds before the next wash.",
       voClip: 'assets/vo/02-damage.mp3',
       arModel: {
-        src: 'assets/gilded-hair-spiral.glb',
+        src: 'assets/gilded-hair-spiral-lite.glb',
         iosSrc: 'assets/gilded-hair-spiral.usdz',
         placement: 'floor',
         label: 'See damaged bonds in your space',
@@ -211,7 +211,7 @@
         <div class="stage-detail stage-molecule">
           <model-viewer
             id="molecule-mv"
-            src="assets/gilded-hair-spiral.glb"
+            src="assets/gilded-hair-spiral-lite.glb"
             ios-src="assets/gilded-hair-spiral.usdz"
             loading="eager"
             auto-rotate
@@ -320,7 +320,7 @@
           <div class="portrait-rim" aria-hidden="true"></div>
           <model-viewer
             id="portrait-mv"
-            src="assets/midnight-curls.glb"
+            src="assets/midnight-curls-lite.glb"
             loading="eager"
             auto-rotate
             auto-rotate-delay="400"
@@ -561,7 +561,7 @@
         <div class="stage-capture">
           <model-viewer
             class="stage-capture-ring"
-            src="assets/hair-ring.glb"
+            src="assets/hair-ring-lite.glb"
             ios-src="assets/hair-ring.usdz"
             loading="eager"
             reveal="auto"
