@@ -1,8 +1,5 @@
 assets/chair.usdz
 
-# GitHub 100MB hard limit — keep in local + Vercel deploy only
-assets/midnight-curls.usdz
-
 # tunnel + debug logs
 tunnel*.log
 tunnel-live.log
