@@ -321,7 +321,6 @@
           <model-viewer
             id="portrait-mv"
             src="assets/midnight-curls.glb"
-            ios-src="assets/midnight-curls.usdz"
             loading="eager"
             auto-rotate
             auto-rotate-delay="400"
