@@ -1224,10 +1224,10 @@
     playVoForChapter(ch);
 
     // ── Sheet collapsed/expanded default per chapter ─────────────
-    // Ch5 "One workflow" leads with the 3D product lineup, so the sheet
-    // starts PEEK so the three bottles are the first thing the user
-    // sees. All other chapters start EXPANDED.
-    setSheetState(ch.id === 'system' ? 'peek' : 'expanded');
+    // Every chapter now starts PEEK so the 3D stage is the hero on
+    // mount. The user taps the DETAILS handle to reveal the body,
+    // stats, widgets, etc. Apple-style bottom-sheet pattern.
+    setSheetState('peek');
 
     // ── Per-chapter haptic beat — each chapter has a distinct
     // physical signature so the rhythm of the narrative is felt, not

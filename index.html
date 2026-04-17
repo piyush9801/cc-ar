@@ -120,8 +120,14 @@
 
   <!-- CHAPTER SHEET — bottom card with narrative + actions -->
   <section id="chapter-sheet" class="chapter-sheet" data-state="expanded" aria-live="polite" aria-atomic="false" hidden>
-    <button class="sheet-handle" aria-label="Toggle chapter details" aria-expanded="true" aria-controls="sheet-body">
+    <button class="sheet-handle" aria-label="Toggle chapter details" aria-expanded="false" aria-controls="sheet-body">
       <span class="sheet-handle-bar"></span>
+      <span class="sheet-handle-affordance">
+        <span class="sheet-handle-label" data-label-peek="Details" data-label-expanded="Collapse">Details</span>
+        <svg class="sheet-handle-chevron" viewBox="0 0 12 8" aria-hidden="true" focusable="false">
+          <path d="M1 6.5L6 1.5L11 6.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
     </button>
     <div class="sheet-body" id="sheet-body"></div>
     <div class="sheet-actions" id="sheet-actions"></div>
